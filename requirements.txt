@@ -1,0 +1,22 @@
+# Hardware / Arduino communication
+cvzone
+pyserial
+
+# Speech Recognition
+SpeechRecognition
+pyaudio
+
+# Text-to-Speech (online)
+gTTS
+pygame
+
+# Text-to-Speech (offline)
+pyttsx3
+
+# Offline Speech Recognition (choose one)
+# vosk
+# openai-whisper
+
+# AI Language Model (choose one)
+# openai
+# google-generativeai
