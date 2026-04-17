@@ -136,8 +136,8 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 ## 👤 Author
 
-**Your Name**
-- GitHub: [@YOUR_USERNAME](https://github.com/YOUR_USERNAME)
+**Aarushi-ai**
+- GitHub: [@Aarushi-ai](https://github.com/Aarushi-ai)
 
 ---
 
