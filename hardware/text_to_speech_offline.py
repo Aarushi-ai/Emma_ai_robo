@@ -1,74 +1,40 @@
 """
-speech_to_text_offline.py
+text_to_speech_offline.py
 --------------------------
-Offline Speech-to-Text Script for Emma AI Robot.
-Uses the VOSK library — no internet connection required.
+Offline Text-to-Speech Script for Emma AI Robot.
+Uses pyttsx3 — no internet connection required.
 
-Step 1 (Offline Alternative): Speech to Text
-Download VOSK model from: https://alphacephei.com/vosk/models  (Fixed: was alphacephei.om)
-
-Libraries: vosk, pyaudio, pygame
+Step 3 (Offline Alternative): Text to Speech
+Libraries: pyttsx3
 """
 
-import vosk
-import pyaudio
-import json
-import pygame
-
-# Initialize Pygame mixer for audio feedback
-pygame.mixer.init()
-
-# Load the VOSK offline model
-model = vosk.Model("../Resources/vosk-model-en-us-0.22")
-recognizer = vosk.KaldiRecognizer(model, 16000)  # Fixed: was KaldiRecognizer(*args:model, 16000)
+import pyttsx3
 
 
-def play_sound(file_path):
+def text_to_speech(text, voice_index=1, rate=170, volume=1.0):
     """
-    Plays a prompt/feedback audio file using Pygame.
+    Convert text to speech using pyttsx3 (offline).
 
-    :param file_path: Path to the .mp3 or .wav file to play.
+    :param text:        The string to speak aloud.
+    :param voice_index: 0 = male voice, 1 = female voice
+    :param rate:        Speech speed in words per minute (default 170)
+    :param volume:      Volume level from 0.0 to 1.0 (default 1.0)
     """
-    pygame.mixer.music.load(file_path)
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(5)
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+
+    # Set voice, rate, and volume
+    engine.setProperty('voice', voices[voice_index].id)  # Fixed: was setProperty(name: 'voice', ...)
+    engine.setProperty('rate', rate)                     # Fixed: was setProperty(name: 'rate', ...)
+    engine.setProperty('volume', volume)                 # Fixed: was setProperty(name: 'volume', ...)
+
+    # Speak the text
+    engine.say(text)
+    engine.runAndWait()
 
 
-def listen_with_vosk():
-    """
-    Listens via microphone and converts speech to text using VOSK (offline).
-
-    :return: Transcribed text string.
-    """
-    mic = pyaudio.PyAudio()
-    stream = mic.open(
-        format=pyaudio.paInt16,
-        channels=1,
-        rate=16000,
-        input=True,
-        frames_per_buffer=8192
-    )
-    stream.start_stream()
-
-    print("Listening...")
-    play_sound("../Resources/listen.mp3")  # Fixed: was ".../Resources/..." (invalid path)
-
-    while True:
-        data = stream.read(8192)
-        if len(data) == 0:
-            continue
-
-        if recognizer.AcceptWaveform(data):
-            play_sound("../Resources/convert.mp3")
-            result = recognizer.Result()
-            text = json.loads(result)["text"]
-            print("You said: " + text)
-            return text
-
-
-# ------------ MAIN ----------------
+# ------------- MAIN -------------
 
 if __name__ == "__main__":
-    while True:
-        listen_with_vosk()
+    text = "Hello, my name is Emma, your personal AI robot!"
+    text_to_speech(text)
