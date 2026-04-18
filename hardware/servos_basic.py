@@ -2,7 +2,6 @@
 servos_basic.py
 ---------------
 Basic Servo Movement Script for Emma AI Robot.
-
 Controls 3 servo motors (Left Arm, Right Arm, Head) via Arduino
 using the cvzone SerialModule for serial communication.
 
@@ -10,8 +9,8 @@ Hardware: Arduino + 3x Servo Motors
 Libraries: cvzone, pyserial
 """
 
-from cvzone.SerialModule import SerialObject  # Serial communication with Arduino
-from time import sleep  # Delays between actions
+from cvzone.SerialModule import SerialObject
+from time import sleep
 
 # ---------------------- INITIALIZATION ----------------------
 
@@ -21,7 +20,6 @@ arduino = SerialObject(digits=3)
 # Initialize last known positions: [LServo, RServo, HServo]
 # Left starts at 180°, Right starts at 0°, Head starts at 90°
 last_positions = [180, 0, 90]
-
 
 # ---------------------- FUNCTIONS ----------------------
 
@@ -33,7 +31,11 @@ def move_servo(target_positions, delay=0.0001):
     :param delay: Time delay (in seconds) between each increment step
     """
     global last_positions
+
     max_steps = max(abs(target_positions[i] - last_positions[i]) for i in range(3))
+
+    if max_steps == 0:  # Guard against division by zero if already at target
+        return
 
     for step in range(max_steps):
         current_positions = [
