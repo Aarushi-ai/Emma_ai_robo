@@ -2,7 +2,6 @@
 hello_emma.py
 -------------
 Hello Gesture Script for Emma AI Robot.
-
 Makes Emma wave "hello" by moving the right arm servo
 back and forth using smooth incremental motion.
 
@@ -10,17 +9,16 @@ Hardware: Arduino + 3x Servo Motors
 Libraries: cvzone, pyserial
 """
 
-from cvzone.SerialModule import SerialObject  # Serial communication with Arduino
-from time import sleep  # Delays between actions
+from cvzone.SerialModule import SerialObject
+from time import sleep
 
 # ---------------------- INITIALIZATION ----------------------
 
 # Create a Serial Object with three digit precision
-arduino = SerialObject(digit=3)
+arduino = SerialObject(digits=3)  # Fixed: was digit=3 (wrong parameter name)
 
 # Initial positions: [LServo=180°, RServo=0°, HServo=90°]
 last_positions = [180, 0, 90]
-
 
 # ---------------------- FUNCTIONS ----------------------
 
@@ -32,7 +30,11 @@ def move_servo(target_positions, delay=0.0001):
     :param delay: Time delay (in seconds) between each increment step
     """
     global last_positions
+
     max_steps = max(abs(target_positions[i] - last_positions[i]) for i in range(3))
+
+    if max_steps == 0:  # Fixed: guard against division by zero if already at target
+        return
 
     for step in range(max_steps):
         current_positions = [
@@ -51,12 +53,15 @@ def hello_gesture():
     Makes Emma wave hello by moving the right servo back and forth.
     """
     global last_positions
+
     # Raise right arm to start waving
     move_servo([last_positions[0], 180, last_positions[2]])
+
     # Wave back and forth 3 times
     for _ in range(3):
         move_servo([last_positions[0], 150, last_positions[2]])  # Arm slightly down
         move_servo([last_positions[0], 180, last_positions[2]])  # Arm back up
+
     # Reset arm to original position
     move_servo([last_positions[0], 0, last_positions[2]])
 
