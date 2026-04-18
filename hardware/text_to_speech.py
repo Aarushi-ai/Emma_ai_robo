@@ -1,55 +1,54 @@
 """
-speech_to_text.py
+text_to_speech.py
 -----------------
-Online Speech-to-Text Script for Emma AI Robot.
-Uses Google's Speech Recognition API via the SpeechRecognition library.
+Online Text-to-Speech Script for Emma AI Robot.
+Uses OpenAI's TTS API for high-quality voice output.
 
-Step 1 (Online): Speech to Text
-Libraries: SpeechRecognition, pyaudio, pygame
+Libraries: openai, pygame, python-dotenv
 """
 
-import speech_recognition as sr
+import io
+import os
 import pygame
+from openai import OpenAI  # Fixed: was "from openai import" (incomplete import)
+from dotenv import load_dotenv
 
-# Initialize Pygame mixer for audio feedback sounds
-pygame.mixer.init()
+load_dotenv()
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
-def play_sound(file_path):
+def play_audio(audio_bytes):
     """
-    Plays a prompt/feedback audio file using Pygame.
+    Plays audio from bytes using Pygame.
 
-    :param file_path: Path to the .mp3 or .wav file to play.
+    :param audio_bytes: Audio content in bytes format.
     """
-    pygame.mixer.music.load(file_path)
+    pygame.mixer.init()
+    pygame.mixer.music.load(io.BytesIO(audio_bytes))
     pygame.mixer.music.play()
     while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(5)  # Fixed: was tick(s) — undefined variable
+        pygame.time.Clock().tick(10)
 
 
-def listen_with_google():
+def openai_text_to_speech(text):
     """
-    Listens via microphone and converts speech to text using Google's API.
+    Converts text to speech using OpenAI TTS API.
 
-    :return: Transcribed text string.
+    :param text: Input text string to speak.
+    :return:     Audio content as bytes.
     """
-    recognizer = sr.Recognizer()
-
-    with sr.Microphone() as source:
-        print("Listening...")
-        play_sound("../Resources/listen.mp3")  # Fixed: was ".../Resources/..." (invalid path)
-
-        audio = recognizer.listen(source)
-
-        play_sound("../Resources/convert.mp3")  # Fixed: was ".../Resources/..." (invalid path)
-
-        text = recognizer.recognize_google(audio)
-        print("You said: " + text)
-        return text
+    response = client.audio.speech.create(
+        model="tts-1",
+        voice="shimmer",
+        input=text
+    )
+    return response.read()  # Fixed: was missing return statement
 
 
 # ----------- MAIN -----------
 
 if __name__ == "__main__":
-    while True:
-        listen_with_google()
+    text = "Hello, I'm Emma, your personal AI robot!"
+    audio = openai_text_to_speech(text)
+    play_audio(audio)
