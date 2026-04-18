@@ -1,12 +1,29 @@
-"""
-text_to_speech.py
------------------
-Online Text-to-Speech Module for Emma AI Robot.
+import io
+import pygame
+from openai import OpenAI
+import os
 
-Converts AI-generated text responses into spoken audio
-using an online TTS service (e.g., Google TTS / ElevenLabs).
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-Libraries: gTTS, pygame / playsound
-"""
+def play_audio(audio_bytes):
+    """Plays audio from bytes using Pygame."""
+    pygame.mixer.init()
+    pygame.mixer.music.load(io.BytesIO(audio_bytes))
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)
 
-# TODO: Implement online text-to-speech
+def openai_text_to_speech(text):
+    """Converts text to speech and returns audio bytes."""
+    response = client.audio.speech.create(
+        model="tts-1",
+        voice="shimmer",
+        input=text
+    )
+    audio_content = response.read()
+    return audio_content  # ← BUG FIX: was missing return
+
+# Test
+text = "Hi, I'm OpenAI's text to speech model"
+audio = openai_text_to_speech(text)
+play_audio(audio)
