@@ -1,29 +1,55 @@
-import io
+"""
+speech_to_text.py
+-----------------
+Online Speech-to-Text Script for Emma AI Robot.
+Uses Google's Speech Recognition API via the SpeechRecognition library.
+
+Step 1 (Online): Speech to Text
+Libraries: SpeechRecognition, pyaudio, pygame
+"""
+
+import speech_recognition as sr
 import pygame
-from openai import OpenAI
-import os
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Initialize Pygame mixer for audio feedback sounds
+pygame.mixer.init()
 
-def play_audio(audio_bytes):
-    """Plays audio from bytes using Pygame."""
-    pygame.mixer.init()
-    pygame.mixer.music.load(io.BytesIO(audio_bytes))
+
+def play_sound(file_path):
+    """
+    Plays a prompt/feedback audio file using Pygame.
+
+    :param file_path: Path to the .mp3 or .wav file to play.
+    """
+    pygame.mixer.music.load(file_path)
     pygame.mixer.music.play()
     while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(10)
+        pygame.time.Clock().tick(5)  # Fixed: was tick(s) — undefined variable
 
-def openai_text_to_speech(text):
-    """Converts text to speech and returns audio bytes."""
-    response = client.audio.speech.create(
-        model="tts-1",
-        voice="shimmer",
-        input=text
-    )
-    audio_content = response.read()
-    return audio_content  # ← BUG FIX: was missing return
 
-# Test
-text = "Hi, I'm OpenAI's text to speech model"
-audio = openai_text_to_speech(text)
-play_audio(audio)
+def listen_with_google():
+    """
+    Listens via microphone and converts speech to text using Google's API.
+
+    :return: Transcribed text string.
+    """
+    recognizer = sr.Recognizer()
+
+    with sr.Microphone() as source:
+        print("Listening...")
+        play_sound("../Resources/listen.mp3")  # Fixed: was ".../Resources/..." (invalid path)
+
+        audio = recognizer.listen(source)
+
+        play_sound("../Resources/convert.mp3")  # Fixed: was ".../Resources/..." (invalid path)
+
+        text = recognizer.recognize_google(audio)
+        print("You said: " + text)
+        return text
+
+
+# ----------- MAIN -----------
+
+if __name__ == "__main__":
+    while True:
+        listen_with_google()
