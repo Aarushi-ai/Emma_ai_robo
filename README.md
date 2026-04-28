@@ -4,8 +4,9 @@
 
 Emma is a humanoid AI robot that can hear you, understand you, talk back to you — and wave hello.
 Built from scratch with Python, Arduino, and cutting-edge AI APIs.
+Now with a **Webots simulation** to test behaviour before physical deployment.
 
-**Status:** Software complete · Physical assembly in progress
+**Status:** Software complete · Webots simulation complete · Physical assembly in progress
 
 ---
 
@@ -18,6 +19,7 @@ Built from scratch with Python, Arduino, and cutting-edge AI APIs.
 | 🔊 Speak back | OpenAI TTS (online) or pyttsx3 (offline) |
 | 💪 Move arms | Arduino + 3× Servo Motors via cvzone |
 | 👋 Wave hello | Smooth servo interpolation gesture |
+| 🌐 Simulated movement | Webots robot simulator |
 
 ---
 
@@ -40,10 +42,20 @@ Emma_ai_robo/
 │   ├── ai_speech_integration.py     # FULL ROBOT — AI + voice + servo movement
 │   └── main.py                      # Software only — AI + voice, no Arduino needed
 │
-├── Resources/
-│   ├── listen.mp3                   # Audio feedback: listening chime
-│   ├── convert.mp3                  # Audio feedback: processing chime
-│   └── vosk-model-en-us-0.22/       # VOSK offline model (download separately)
+├── my_project/                      # 🆕 Webots Simulation
+│   ├── controllers/
+│   │   └── emma_controller/
+│   │       └── emma_controller.py   # Emma's brain in simulation
+│   ├── worlds/
+│   │   └── emma_robo.wbt            # Webots world file
+│   ├── libraries/                   # Custom Webots libraries
+│   ├── plugins/                     # Webots plugins
+│   │   ├── physics/
+│   │   ├── remote_controls/
+│   │   └── robot_windows/
+│   ├── protos/                      # Custom robot proto models
+│   └── Resources/
+│       └── vosk-model-en-us-0.22/   # VOSK offline model (download separately)
 │
 ├── .env.example                     # API key template
 ├── .gitignore
@@ -78,6 +90,7 @@ Emma_ai_robo/
 | `hardware/hello_emma.py` | ✅ Yes | Tests hello wave gesture |
 | `software/main.py` | ❌ No | AI + voice only, no movement |
 | `software/ai_speech_integration.py` | ✅ Yes | Full robot — AI + voice + movement |
+| Webots → `my_project/worlds/emma_robo.wbt` | ❌ No | Simulated Emma in Webots |
 
 ---
 
@@ -129,7 +142,9 @@ Get your keys here:
 
 Download `vosk-model-en-us-0.22` from https://alphacephei.com/vosk/models
 
-Place the extracted folder inside `Resources/`.
+Place the extracted folder inside:
+- `software/` for the main pipeline
+- `my_project/Resources/` for the Webots simulation
 
 ### 6. Upload Arduino sketch
 
@@ -144,6 +159,27 @@ python software/main.py
 # Full robot (Arduino connected)
 python software/ai_speech_integration.py
 ```
+
+---
+
+## 🌐 Webots Simulation
+
+Emma now has a virtual simulation environment built in **Webots**, allowing her behaviour and movement to be tested without physical hardware.
+
+### Requirements
+- [Webots](https://cyberbotics.com/) R2023b or later
+- Python 3.10+
+
+### How to Run the Simulation
+
+1. Open Webots
+2. Go to **File → Open World**
+3. Select `my_project/worlds/emma_robo.wbt`
+4. Press **Play ▶**
+
+Emma's controller (`my_project/controllers/emma_controller/emma_controller.py`) handles her simulated behaviour.
+
+> **Note:** The VOSK speech model is not included in the repo due to its size. Download it separately (see step 5 above) and place it in `my_project/Resources/`.
 
 ---
 
@@ -202,9 +238,11 @@ python-dotenv       # API key management
 - [x] Gemini AI integration
 - [x] Full pipeline — `main.py`
 - [x] Full robot integration — `ai_speech_integration.py`
+- [x] Webots simulation — basic simulation complete
 - [ ] Physical robot assembly
 - [ ] Face tracking with camera
 - [ ] Wake word — "Hey Emma"
+- [ ] Full AI behaviour in Webots simulation
 - [ ] Demo video
 
 ---
