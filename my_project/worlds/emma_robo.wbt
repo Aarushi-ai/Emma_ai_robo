@@ -1,0 +1,150 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.06209800263127931 0.06544943253455206 0.9959217890226676 1.5223804660218938
+  position -0.16302936113884317 -2.4161527565489003 0.7508426858836451
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+}
+Robot {
+  translation 2.509833683180149e-07 7.655632845153407e-08 0.02573856899651172
+  rotation -0.6759080302155698 -0.5587154962131753 0.48060933093456903 1.4008035857279232e-06
+  children [
+    Pose {
+      translation 0 0 0.4
+      children [
+        Shape {
+          geometry Cylinder {
+            height 0.5
+            radius 0.15
+          }
+        }
+      ]
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position -0.005443956604397595
+        axis 0 1 0
+        anchor 0 0 0.65
+        minStop -1.57
+        maxStop 1.57
+      }
+      device [
+        DEF head_motor RotationalMotor {
+          name "head motor"
+          minPosition -1.5708
+          maxPosition 1.5708
+        }
+      ]
+      endPoint Solid {
+        translation 0 0 0.65
+        rotation 0 -1 0 0.005443956604372604
+        children [
+          Shape {
+            geometry Cylinder {
+              height 0.15
+              radius 0.08
+            }
+          }
+        ]
+        boundingObject Cylinder {
+          height 0.15
+          radius 0.08
+        }
+        physics Physics {
+        }
+        linearVelocity 1.4539867336144469e-05 -2.1311629134044333e-06 1.4125440338503338e-06
+        angularVelocity 2.897161731930632e-06 0.08007842540280384 -7.282162621374012e-08
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 3.140016000000925
+        anchor -0.2 0 0.4
+        maxStop 3.14
+      }
+      device [
+        DEF left_arm_motor RotationalMotor {
+          name "left arm motor"
+          maxPosition 3.1415900000000088
+        }
+      ]
+      endPoint Solid {
+        translation -0.2 0 0.4
+        rotation 0.9999999999999999 -5.1660874075229785e-16 6.400357047444063e-13 3.1400160000002115
+        children [
+          Shape {
+            geometry Cylinder {
+              height 0.3
+              radius 0.05
+            }
+          }
+        ]
+        name "solid(1)"
+        boundingObject Cylinder {
+          height 0.3
+          radius 0.05
+        }
+        physics Physics {
+        }
+        linearVelocity 9.514269747626695e-06 -1.3985540623818285e-06 5.430953774929522e-06
+        angularVelocity 2.948671771267626e-06 2.00792556537057e-05 2.251908276066834e-08
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 7.069235672204003e-07
+        anchor 0.2 0 0.4
+        maxStop 3.14
+      }
+      device [
+        DEF right_arm_motor RotationalMotor {
+          name "right arm motor"
+          minPosition -1.57
+          maxPosition 3.14159
+        }
+      ]
+      endPoint Solid {
+        translation 0.2 0 0.4
+        rotation 1 0 0 7.071382115903338e-07
+        children [
+          Shape {
+            geometry Cylinder {
+              height 0.3
+              radius 0.05
+            }
+          }
+        ]
+        name "solid(2)"
+        boundingObject Cylinder {
+          height 0.3
+          radius 0.05
+        }
+        physics Physics {
+        }
+        linearVelocity 9.514138974370637e-06 -1.3895465935426257e-06 -2.6058937014839584e-06
+        angularVelocity -7.44727777850822e-06 2.007954628766775e-05 2.3068162076681278e-08
+      }
+    }
+  ]
+  name "emma_robo"
+  boundingObject Cylinder {
+    height 0.15
+    radius 0.5
+  }
+  physics Physics {
+  }
+  controller "emma_controller"
+  linearVelocity 1.4763936728445652e-06 -2.146342530718728e-07 1.4122989906451453e-06
+  angularVelocity 2.948695908935008e-06 2.007915035458422e-05 2.251921998639391e-08
+}

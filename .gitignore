@@ -30,3 +30,4 @@ build/
 
 # Logs
 *.log
+my_project/Resources/vosk-model-en-us-0.22/ 
