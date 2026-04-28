@@ -1,118 +1,93 @@
-# 🤖 Emma — AI-Powered Humanoid Robot
+# Emma — AI-Powered Humanoid Robot
 
-> *She listens. She thinks. She speaks. She moves.*
+Emma is a humanoid robot built from scratch, combining offline and online AI capabilities with physical servo-based movement. She can listen to speech, generate intelligent responses via Gemini AI, speak back using text-to-speech, and move her arms — all in a unified pipeline. A Webots-based simulation environment is currently under active development.
 
-Emma is a humanoid AI robot that can hear you, understand you, talk back to you — and wave hello.
-Built from scratch with Python, Arduino, and cutting-edge AI APIs.
-Now with a **Webots simulation** to test behaviour before physical deployment.
+**Current Status**
 
-**Status:** Software complete · Webots simulation complete · Physical assembly in progress
-
----
-
-## 🧠 What Emma Can Do
-
-| Capability | Technology |
+| Component | Status |
 |---|---|
-| 🎙️ Hear you | VOSK (offline) or Google Speech API (online) |
-| 🤖 Understand & respond | Google Gemini 2.5 Flash |
-| 🔊 Speak back | OpenAI TTS (online) or pyttsx3 (offline) |
-| 💪 Move arms | Arduino + 3× Servo Motors via cvzone |
-| 👋 Wave hello | Smooth servo interpolation gesture |
-| 🌐 Simulated movement | Webots robot simulator |
+| AI + Voice Pipeline | Complete |
+| Arduino Servo Control | Complete |
+| Webots Simulation | Basic — refinement in progress |
+| Physical Assembly | In progress |
 
 ---
 
-## 📁 Project Structure
+## Capabilities
+
+| Feature | Technology |
+|---|---|
+| Speech Recognition (Online) | Google Speech API |
+| Speech Recognition (Offline) | VOSK |
+| AI Response Generation | Google Gemini 2.5 Flash |
+| Text-to-Speech (Online) | OpenAI TTS |
+| Text-to-Speech (Offline) | pyttsx3 |
+| Arm Movement | Arduino + 3x Servo Motors via cvzone |
+| Simulation | Webots |
+
+---
+
+## Project Structure
 
 ```
 Emma_ai_robo/
 │
 ├── hardware/
-│   ├── Emma_Robo.ino                # Arduino sketch — controls servo motors
-│   ├── servos_basic.py              # Smooth servo movement with interpolation
-│   └── hello_emma.py                # Hello wave gesture
+│   ├── Emma_Robo.ino                  # Arduino sketch for servo control
+│   ├── servos_basic.py                # Servo movement with smooth interpolation
+│   └── hello_emma.py                  # Hello wave gesture
 │
 ├── software/
-│   ├── speech_to_text.py            # Online speech-to-text (Google API)
-│   ├── speech_to_text_offline.py    # Offline speech-to-text (VOSK)
-│   ├── ai_model.py                  # AI response generation (Gemini)
-│   ├── text_to_speech.py            # Online text-to-speech (OpenAI)
-│   ├── text_to_speech_offline.py    # Offline text-to-speech (pyttsx3)
-│   ├── ai_speech_integration.py     # FULL ROBOT — AI + voice + servo movement
-│   └── main.py                      # Software only — AI + voice, no Arduino needed
+│   ├── speech_to_text.py              # Online speech-to-text (Google API)
+│   ├── speech_to_text_offline.py      # Offline speech-to-text (VOSK)
+│   ├── ai_model.py                    # AI response generation (Gemini)
+│   ├── text_to_speech.py              # Online text-to-speech (OpenAI)
+│   ├── text_to_speech_offline.py      # Offline text-to-speech (pyttsx3)
+│   ├── ai_speech_integration.py       # Full pipeline — AI + voice + movement
+│   └── main.py                        # Software only — AI + voice, no Arduino
 │
-├── my_project/                      # 🆕 Webots Simulation
+├── my_project/                        # Webots Simulation (in progress)
 │   ├── controllers/
 │   │   └── emma_controller/
-│   │       └── emma_controller.py   # Emma's brain in simulation
+│   │       └── emma_controller.py     # Emma's simulation controller
 │   ├── worlds/
-│   │   └── emma_robo.wbt            # Webots world file
-│   ├── libraries/                   # Custom Webots libraries
-│   ├── plugins/                     # Webots plugins
+│   │   └── emma_robo.wbt              # Webots world file
+│   ├── libraries/
+│   ├── plugins/
 │   │   ├── physics/
 │   │   ├── remote_controls/
 │   │   └── robot_windows/
-│   ├── protos/                      # Custom robot proto models
+│   ├── protos/
 │   └── Resources/
-│       └── vosk-model-en-us-0.22/   # VOSK offline model (download separately)
+│       └── vosk-model-en-us-0.22/     # VOSK model (download separately)
 │
-├── .env.example                     # API key template
+├── .env.example                       # API key template
 ├── .gitignore
-├── LICENSE
 ├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## ⚡ How It Works
+## Getting Started
 
-```
-  [ You speak ]
-       ↓
-  [ Speech-to-Text ]   →   speech_to_text.py / speech_to_text_offline.py
-       ↓
-  [ Gemini AI ]        →   ai_model.py
-       ↓
-  [ Text-to-Speech ]   →   text_to_speech.py / text_to_speech_offline.py
-       ↓
-  [ Speaker ]  +  [ Servo Motors — Emma moves! ]
-```
-
----
-
-## 🗂️ Which Script to Run?
-
-| Script | Needs Arduino? | Does |
-|---|---|---|
-| `hardware/servos_basic.py` | ✅ Yes | Tests servo movement |
-| `hardware/hello_emma.py` | ✅ Yes | Tests hello wave gesture |
-| `software/main.py` | ❌ No | AI + voice only, no movement |
-| `software/ai_speech_integration.py` | ✅ Yes | Full robot — AI + voice + movement |
-| Webots → `my_project/worlds/emma_robo.wbt` | ❌ No | Simulated Emma in Webots |
-
----
-
-## 🚀 Getting Started
-
-### 1. Clone the repo
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Aarushi-ai/Emma_ai_robo.git
 cd Emma_ai_robo
 ```
 
-### 2. Create a virtual environment
+### 2. Set up a virtual environment
 
 ```bash
 python -m venv .venv
 
-# Mac/Linux:
-source .venv/bin/activate
-
-# Windows:
+# Windows
 .venv\Scripts\activate
+
+# Mac / Linux
+source .venv/bin/activate
 ```
 
 ### 3. Install dependencies
@@ -121,81 +96,91 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. Add your API keys
+### 4. Configure API keys
 
 ```bash
 cp .env.example .env
 ```
 
-Open `.env` and fill in:
+Open `.env` and fill in your keys:
 
 ```
 GEMINI_API_KEY=your_gemini_key_here
 OPENAI_API_KEY=your_openai_key_here
 ```
 
-Get your keys here:
-- Gemini → https://ai.google.dev/gemini-api/docs/api-key
-- OpenAI → https://platform.openai.com/api-keys
+- Gemini API key: https://ai.google.dev/gemini-api/docs/api-key
+- OpenAI API key: https://platform.openai.com/api-keys
 
-### 5. Download VOSK model (offline speech recognition)
+### 5. Download the VOSK model (offline speech only)
 
-Download `vosk-model-en-us-0.22` from https://alphacephei.com/vosk/models
-
-Place the extracted folder inside:
+Download `vosk-model-en-us-0.22` from https://alphacephei.com/vosk/models and place the extracted folder in:
 - `software/` for the main pipeline
 - `my_project/Resources/` for the Webots simulation
 
-### 6. Upload Arduino sketch
+> The model is not included in this repository due to its size.
 
-Open `hardware/Emma_Robo.ino` in Arduino IDE and upload to your board.
+### 6. Upload the Arduino sketch
 
-### 7. Run Emma
+Open `hardware/Emma_Robo.ino` in Arduino IDE and upload it to your board.
+
+---
+
+## Running Emma
+
+| Script | Arduino Required | Description |
+|---|---|---|
+| `software/main.py` | No | AI + voice only |
+| `software/ai_speech_integration.py` | Yes | Full pipeline — AI + voice + movement |
+| `hardware/servos_basic.py` | Yes | Test servo movement |
+| `hardware/hello_emma.py` | Yes | Test hello wave gesture |
 
 ```bash
-# Software only (no Arduino needed)
+# Run software-only mode
 python software/main.py
 
-# Full robot (Arduino connected)
+# Run full robot mode
 python software/ai_speech_integration.py
 ```
 
 ---
 
-## 🌐 Webots Simulation
+## Webots Simulation
 
-Emma now has a virtual simulation environment built in **Webots**, allowing her behaviour and movement to be tested without physical hardware.
+A simulation environment for Emma is being developed in Webots. The basic simulation is functional — Emma's robot model loads in the world and the controller runs. Work is ongoing to refine movement accuracy, behaviour logic, and sensor integration.
 
 ### Requirements
+
 - [Webots](https://cyberbotics.com/) R2023b or later
 - Python 3.10+
 
-### How to Run the Simulation
+### Running the Simulation
 
 1. Open Webots
 2. Go to **File → Open World**
 3. Select `my_project/worlds/emma_robo.wbt`
-4. Press **Play ▶**
+4. Press **Play**
 
-Emma's controller (`my_project/controllers/emma_controller/emma_controller.py`) handles her simulated behaviour.
+Emma's behaviour in simulation is controlled by `my_project/controllers/emma_controller/emma_controller.py`.
 
-> **Note:** The VOSK speech model is not included in the repo due to its size. Download it separately (see step 5 above) and place it in `my_project/Resources/`.
+**What works:** Robot loads, controller runs, basic motion executes.  
+**In progress:** Movement smoothing, behaviour refinement, full AI integration in simulation.
 
 ---
 
-## 🛠️ Hardware
+## Hardware
 
 | Component | Detail |
 |---|---|
 | Microcontroller | Arduino Uno / Mega |
-| Servo Motors | 3× (Left Arm, Right Arm, Head) |
+| Servo Motors | 3x (Left Arm, Right Arm, Head) |
 | Microphone | USB or 3.5mm |
 | Speaker | USB or 3.5mm |
 | Computer | Python 3.10+ |
 
-**Servo Pin Mapping:**
+**Servo Pin Mapping**
 
-| Servo | Pin | Default |
+| Servo | Pin | Default Angle |
 |---|---|---|
 | Left Arm | D8 | 180° |
 | Right Arm | D9 | 0° |
@@ -203,7 +188,7 @@ Emma's controller (`my_project/controllers/emma_controller/emma_controller.py`) 
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
 ```
 cvzone              # Arduino serial communication
@@ -215,46 +200,46 @@ openai              # TTS + API
 pygame              # Audio playback
 pyttsx3             # Offline TTS
 google-generativeai # Gemini AI
-python-dotenv       # API key management
+python-dotenv       # Environment variable management
 ```
 
 ---
 
-## 🔒 API Key Safety
+## API Key Safety
 
-- Never paste real keys into code files
-- `.env` is blocked by `.gitignore` — it will never be pushed to GitHub
-- `.env.example` is the safe public template with no real keys
-- If you accidentally expose a key, revoke it immediately at the provider dashboard
+- API keys are stored in `.env` which is listed in `.gitignore` and never pushed to GitHub
+- `.env.example` is a safe public template — it contains no real keys
+- If a key is accidentally exposed, revoke it immediately from the provider dashboard
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [x] Servo motor control
 - [x] Hello wave gesture
-- [x] Speech-to-text (online + offline)
-- [x] Text-to-speech (online + offline)
+- [x] Speech-to-text — online and offline
+- [x] Text-to-speech — online and offline
 - [x] Gemini AI integration
-- [x] Full pipeline — `main.py`
+- [x] Full software pipeline — `main.py`
 - [x] Full robot integration — `ai_speech_integration.py`
-- [x] Webots simulation — basic simulation complete
+- [x] Webots simulation — basic setup complete
+- [ ] Webots simulation — movement smoothing and refinement
+- [ ] Webots simulation — full AI behaviour integration
 - [ ] Physical robot assembly
 - [ ] Face tracking with camera
-- [ ] Wake word — "Hey Emma"
-- [ ] Full AI behaviour in Webots simulation
+- [ ] Wake word detection — "Hey Emma"
 - [ ] Demo video
 
 ---
 
-## 📄 License
+## License
 
 MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-## 👤 Author
+## Author
 
 **Aarushi** · [@Aarushi-ai](https://github.com/Aarushi-ai)
 
-*Emma is a personal robotics project combining AI, hardware, and human-robot interaction — built entirely from scratch.*
+*Emma is a personal robotics project exploring the intersection of AI, voice interaction, and physical hardware — built entirely from scratch.*
